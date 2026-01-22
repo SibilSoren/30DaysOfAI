@@ -57,8 +57,8 @@ st.divider()
 with st.sidebar:
     st.header(":material/settings: Settings")
     
-    # Check for search service from Day 19
-    default_service = st.session_state.get('search_service', 'RAG_DB.RAG_SCHEMA.CUSTOMER_REVIEW_SEARCH')
+    # Default search service from Day 19
+    default_service = 'RAG_DB.RAG_SCHEMA.CUSTOMER_REVIEW_SEARCH'
     
     # Try to get available services
     try:
@@ -68,9 +68,10 @@ with st.sidebar:
     except:
         available_services = []
     
-    # Add default if not in list
-    if default_service and default_service not in available_services:
-        available_services.insert(0, default_service)
+    # Ensure default service is always first
+    if default_service in available_services:
+        available_services.remove(default_service)
+    available_services.insert(0, default_service)
     
     # Add manual entry option
     if available_services:
